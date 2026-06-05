@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!-- 
+  testng.xml - Controls WHICH tests run and HOW they run.
+  
+  WHY NEEDED:
+  - Without this, you run tests one-by-one manually
+  - With this, you run the ENTIRE suite with one click
+  - Controls parallel execution, thread count, and test grouping
+  
+  REUSABLE: Yes - just update class names for new projects.
+  LOCATION: Project root (next to pom.xml)
+-->
+<suite name="website Suite" parallel="methods" thread-count="2">
+    
+    <test name="Facebook Tests">
+        <classes>
+            <class name="com.website.testing.LoginTest"/>
+            <!-- Add more test classes here as you create them -->
+            <!-- <class name="com.website.testing.RegistrationTest"/> -->
+        </classes>
+    </test>
+    
+</suite>

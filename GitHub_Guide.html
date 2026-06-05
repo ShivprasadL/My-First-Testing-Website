@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git & GitHub - Complete Beginner Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --surface2: #1c2333;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent2: #3fb950;
+            --accent3: #d2a8ff;
+            --warning: #d29922;
+            --danger: #f85149;
+            --gradient1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+        /* Sidebar */
+        .sidebar {
+            position: fixed; top: 0; left: 0; width: 280px; height: 100vh;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 24px 0;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        .sidebar-title {
+            font-size: 18px; font-weight: 800;
+            padding: 0 24px 20px;
+            background: var(--gradient1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sidebar a {
+            display: block; padding: 10px 24px;
+            color: var(--text-muted); text-decoration: none;
+            font-size: 13px; font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            color: var(--accent);
+            background: rgba(88,166,255,0.06);
+            border-left-color: var(--accent);
+        }
+        .sidebar .section-label {
+            font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px;
+            color: var(--text-muted); padding: 20px 24px 8px;
+            font-weight: 700;
+        }
+        /* Main */
+        .main { margin-left: 280px; padding: 40px 60px 80px; max-width: 900px; }
+        /* Hero */
+        .hero {
+            background: var(--gradient1);
+            border-radius: 16px;
+            padding: 48px;
+            margin-bottom: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: ''; position: absolute;
+            top: -50%; right: -20%; width: 300px; height: 300px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+        }
+        .hero h1 {
+            font-size: 36px; font-weight: 800;
+            margin-bottom: 12px; color: #fff;
+        }
+        .hero p { font-size: 16px; color: rgba(255,255,255,0.85); max-width: 500px; }
+        /* Sections */
+        .section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 36px;
+            margin-bottom: 32px;
+        }
+        .section h2 {
+            font-size: 22px; font-weight: 700;
+            margin-bottom: 20px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section h2 .icon {
+            width: 36px; height: 36px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+        }
+        .section h3 {
+            font-size: 16px; font-weight: 600;
+            margin: 24px 0 12px;
+            color: var(--accent3);
+        }
+        p, li { color: var(--text-muted); font-size: 14.5px; margin-bottom: 10px; }
+        strong { color: var(--text); }
+        a { color: var(--accent); }
+        ul, ol { padding-left: 20px; margin-bottom: 16px; }
+        li { margin-bottom: 6px; }
+        /* Tables */
+        table {
+            width: 100%; border-collapse: collapse;
+            margin: 16px 0; font-size: 14px;
+        }
+        th {
+            background: var(--surface2); color: var(--accent);
+            padding: 12px 16px; text-align: left;
+            font-weight: 600; border: 1px solid var(--border);
+        }
+        td {
+            padding: 10px 16px; border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+        tr:hover td { background: rgba(88,166,255,0.04); }
+        /* Code blocks */
+        pre {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 12px 0 16px;
+            overflow-x: auto;
+            position: relative;
+        }
+        pre .label {
+            position: absolute; top: 8px; right: 12px;
+            font-size: 11px; color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+            background: var(--surface2);
+            padding: 2px 8px; border-radius: 4px;
+        }
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px; color: var(--accent2);
+        }
+        p code {
+            background: var(--surface2);
+            padding: 2px 7px; border-radius: 4px;
+            font-size: 13px; color: var(--accent);
+        }
+        .comment { color: var(--text-muted); }
+        /* Alerts */
+        .alert {
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 13.5px;
+            border-left: 4px solid;
+            display: flex; gap: 10px; align-items: flex-start;
+        }
+        .alert-info { background: rgba(88,166,255,0.08); border-color: var(--accent); }
+        .alert-success { background: rgba(63,185,80,0.08); border-color: var(--accent2); }
+        .alert-warning { background: rgba(210,153,34,0.08); border-color: var(--warning); }
+        .alert-danger { background: rgba(248,81,73,0.08); border-color: var(--danger); }
+        .alert .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+        .alert p { margin: 0; color: var(--text); }
+        /* Steps */
+        .step {
+            display: flex; gap: 16px;
+            margin: 16px 0;
+            padding: 16px;
+            background: var(--surface2);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        .step-num {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: var(--gradient1);
+            color: #fff; font-weight: 700; font-size: 14px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .step-content { flex: 1; }
+        .step-content p { margin: 0; }
+        /* Flow diagram */
+        .flow {
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; margin: 24px 0; flex-wrap: wrap;
+        }
+        .flow-box {
+            padding: 14px 22px;
+            border-radius: 10px;
+            font-size: 13px; font-weight: 600;
+            text-align: center;
+        }
+        .flow-arrow { font-size: 20px; color: var(--text-muted); }
+        .flow-local { background: rgba(63,185,80,0.15); color: var(--accent2); border: 1px solid rgba(63,185,80,0.3); }
+        .flow-action { background: rgba(210,168,255,0.12); color: var(--accent3); border: 1px solid rgba(210,168,255,0.3); }
+        .flow-remote { background: rgba(88,166,255,0.15); color: var(--accent); border: 1px solid rgba(88,166,255,0.3); }
+        /* File tree */
+        .file-tree {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.9;
+        }
+        .file-tree .folder { color: var(--accent); }
+        .file-tree .file { color: var(--accent2); }
+        .file-tree .ignored { color: var(--text-muted); opacity: 0.4; text-decoration: line-through; }
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-red { background: rgba(248,81,73,0.15); color: var(--danger); }
+        .badge-green { background: rgba(63,185,80,0.15); color: var(--accent2); }
+        /* Summary box */
+        .summary-box {
+            background: linear-gradient(135deg, rgba(88,166,255,0.08), rgba(210,168,255,0.08));
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            margin: 24px 0;
+        }
+        .summary-box h3 { color: var(--accent); margin-top: 0; }
+        .summary-box pre { background: var(--bg); }
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 24px; }
+            .hero { padding: 28px; }
+            .hero h1 { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+    <div class="sidebar-title">📘 GitHub Guide</div>
+    <div class="section-label">Learn</div>
+    <a href="#concepts">Core Concepts</a>
+    <a href="#how-it-works">How It Works</a>
+    <div class="section-label">Setup</div>
+    <a href="#install-git">Install Git</a>
+    <a href="#configure-git">Configure Git</a>
+    <a href="#create-repo">Create GitHub Repo</a>
+    <div class="section-label">Action</div>
+    <a href="#push-project">Push Your Project</a>
+    <a href="#verify">Verify on GitHub</a>
+    <a href="#daily-workflow">Daily Workflow</a>
+    <div class="section-label">Reference</div>
+    <a href="#commands">All Commands</a>
+    <a href="#cheatsheet">Cheat Sheet</a>
+</nav>
+
+<!-- Main Content -->
+<div class="main">
+
+    <!-- Hero -->
+    <div class="hero" id="top">
+        <h1>🚀 Git & GitHub Guide</h1>
+        <p>A complete beginner-friendly guide to push your <strong>AutomationWebsite1</strong> project to GitHub. Follow step by step.</p>
+    </div>
+
+    <!-- Part 1: Concepts -->
+    <div class="section" id="concepts">
+        <h2><span class="icon" style="background:rgba(88,166,255,0.15)">💡</span> Part 1: Core Concepts</h2>
+
+        <h3>What is Git?</h3>
+        <p>Git is a <strong>version control system</strong> — a tool that tracks every change you make to your code. Think of it like an <strong>"undo history"</strong> for your entire project, but much more powerful.</p>
+
+        <h3>What is GitHub?</h3>
+        <p>GitHub is a <strong>website that hosts Git repositories online</strong>. It lets you back up code in the cloud, collaborate with others, and share your projects.</p>
+
+        <h3>Key Terms</h3>
+        <table>
+            <tr><th>Term</th><th>Meaning</th></tr>
+            <tr><td><strong>Repository (Repo)</strong></td><td>A project folder tracked by Git</td></tr>
+            <tr><td><strong>Commit</strong></td><td>A "save point" — a snapshot of your code at a moment in time</td></tr>
+            <tr><td><strong>Branch</strong></td><td>A parallel copy of code to experiment safely</td></tr>
+            <tr><td><strong>Push</strong></td><td>Upload your local commits to GitHub (cloud)</td></tr>
+            <tr><td><strong>Pull</strong></td><td>Download latest changes from GitHub to your computer</td></tr>
+            <tr><td><strong>Clone</strong></td><td>Download an entire repository from GitHub</td></tr>
+        </table>
+    </div>
+
+    <!-- How it works -->
+    <div class="section" id="how-it-works">
+        <h2><span class="icon" style="background:rgba(210,168,255,0.15)">🔄</span> How Git & GitHub Work Together</h2>
+        <div class="flow">
+            <div class="flow-box flow-local">💻 Your Computer<br><small>(Local Repo)</small></div>
+            <div class="flow-arrow">→ <small style="font-size:11px">git push</small> →</div>
+            <div class="flow-box flow-remote">☁️ GitHub<br><small>(Remote Repo)</small></div>
+        </div>
+        <div class="flow">
+            <div class="flow-box flow-remote">☁️ GitHub</div>
+            <div class="flow-arrow">→ <small style="font-size:11px">git pull</small> →</div>
+            <div class="flow-box flow-local">💻 Your Computer</div>
+        </div>
+        <ol>
+            <li>You write code on your computer</li>
+            <li>You <strong>commit</strong> (save a snapshot) locally</li>
+            <li>You <strong>push</strong> to GitHub (upload to cloud)</li>
+            <li>Others can <strong>pull</strong> your code, or you access it from anywhere</li>
+        </ol>
+    </div>
+
+    <!-- Part 2: Install Git -->
+    <div class="section" id="install-git">
+        <h2><span class="icon" style="background:rgba(248,81,73,0.15)">⬇️</span> Part 2: Install Git on Windows</h2>
+
+        <div class="alert alert-danger">
+            <span class="icon">🔴</span>
+            <p><strong>Git is NOT installed</strong> on your system. You must install it before running any commands.</p>
+        </div>
+
+        <h3>Step 1: Download Git</h3>
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <p>Go to <a href="https://git-scm.com/download/win" target="_blank"><strong>https://git-scm.com/download/win</strong></a></p>
+                <p>Download the <strong>64-bit</strong> version. Download starts automatically.</p>
+            </div>
+        </div>
+
+        <h3>Step 2: Install Git</h3>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <p>Run the downloaded <code>.exe</code> file</p>
+                <p><strong>Click "Next" through most screens</strong> — the defaults are fine for beginners.</p>
+                <p>On the <strong>"Adjusting your PATH"</strong> screen, ensure <strong>"Git from the command line and also from 3rd-party software"</strong> is selected (this is the default).</p>
+            </div>
+        </div>
+
+        <h3>Step 3: Verify Installation</h3>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <p><strong>Close and reopen</strong> your terminal or VS Code, then run:</p>
+            </div>
+        </div>
+        <pre><span class="label">PowerShell</span><code>git --version</code></pre>
+        <p>You should see: <code>git version 2.45.x.windows.1</code></p>
+
+        <div class="alert alert-info">
+            <span class="icon">💡</span>
+            <p>If the command still says "not recognized", <strong>restart your computer</strong> and try again. The PATH needs to refresh.</p>
+        </div>
+    </div>
+
+    <!-- Part 3: Configure Git -->
+    <div class="section" id="configure-git">
+        <h2><span class="icon" style="background:rgba(63,185,80,0.15)">⚙️</span> Part 3: One-Time Git Setup</h2>
+        <p>Tell Git who you are. This info is attached to every commit.</p>
+        <pre><span class="label">PowerShell</span><code>git config --global user.name "Your Name"
+git config --global user.email "your-email@example.com"</code></pre>
+
+        <div class="alert alert-warning">
+            <span class="icon">⚠️</span>
+            <p>Use the <strong>same email</strong> you used for your GitHub account. This links your commits to your profile.</p>
+        </div>
+    </div>
+
+    <!-- Part 4: Create Repo on GitHub -->
+    <div class="section" id="create-repo">
+        <h2><span class="icon" style="background:rgba(88,166,255,0.15)">🌐</span> Part 4: Create Repository on GitHub</h2>
+
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <p>Go to <a href="https://github.com" target="_blank"><strong>github.com</strong></a> and log in</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <p>Click the <strong>"+"</strong> button (top-right corner) → <strong>"New repository"</strong></p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <p>Fill in the details:</p>
+            </div>
+        </div>
+
+        <table>
+            <tr><th>Field</th><th>Value</th></tr>
+            <tr><td><strong>Repository name</strong></td><td>AutomationWebsite1</td></tr>
+            <tr><td><strong>Description</strong></td><td>Selenium TestNG Automation Framework (optional)</td></tr>
+            <tr><td><strong>Visibility</strong></td><td>Public or Private (your choice)</td></tr>
+            <tr><td><strong>Initialize with README</strong></td><td>❌ Do NOT check this</td></tr>
+            <tr><td><strong>Add .gitignore</strong></td><td>❌ Do NOT check this</td></tr>
+        </table>
+
+        <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+                <p>Click <strong>"Create repository"</strong></p>
+                <p>Copy the URL shown: <code>https://github.com/YOUR-USERNAME/AutomationWebsite1.git</code></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Part 5: Push Project -->
+    <div class="section" id="push-project">
+        <h2><span class="icon" style="background:rgba(248,81,73,0.15)">🎯</span> Part 5: Push Your Project to GitHub</h2>
+        <p>Open a terminal in your project folder and run these commands <strong>one by one</strong>:</p>
+
+        <h3>Step 1: Initialize Git</h3>
+        <pre><span class="label">PowerShell</span><code>cd "l:\shiv\Tools\Eclipse\AutomationWebsite1"
+git init</code></pre>
+        <p>This creates a hidden <code>.git</code> folder — your project is now a Git repo.</p>
+
+        <h3>Step 2: Add all files</h3>
+        <pre><span class="label">PowerShell</span><code>git add .</code></pre>
+        <p>This tells Git to track all files. Your <code>.gitignore</code> will automatically exclude <code>target/</code>, <code>logs/</code>, <code>reports/</code>, <code>screenshots/</code>.</p>
+
+        <h3>Step 3: Create first commit</h3>
+        <pre><span class="label">PowerShell</span><code>git commit -m "Initial commit: Selenium TestNG automation framework"</code></pre>
+
+        <h3>Step 4: Connect to GitHub</h3>
+        <pre><span class="label">PowerShell</span><code>git remote add origin https://github.com/YOUR-USERNAME/AutomationWebsite1.git</code></pre>
+        <div class="alert alert-warning">
+            <span class="icon">⚠️</span>
+            <p>Replace <strong>YOUR-USERNAME</strong> with your actual GitHub username!</p>
+        </div>
+
+        <h3>Step 5: Push!</h3>
+        <pre><span class="label">PowerShell</span><code>git branch -M main
+git push -u origin main</code></pre>
+
+        <div class="alert alert-info">
+            <span class="icon">🔐</span>
+            <p>First time pushing? GitHub will open a <strong>browser window</strong> for you to log in and authorize Git.</p>
+        </div>
+    </div>
+
+    <!-- Part 6: Verify -->
+    <div class="section" id="verify">
+        <h2><span class="icon" style="background:rgba(63,185,80,0.15)">✅</span> Part 6: Verify on GitHub</h2>
+        <p>Go to <code>https://github.com/YOUR-USERNAME/AutomationWebsite1</code> — you should see your files! 🎉</p>
+
+        <h3>Your project on GitHub will look like:</h3>
+        <div class="file-tree">
+            <span class="folder">📁 AutomationWebsite1/</span><br>
+            ├── <span class="folder">📁 src/</span><br>
+            │&nbsp;&nbsp; ├── <span class="folder">📁 main/java/.../utilities/</span><br>
+            │&nbsp;&nbsp; │&nbsp;&nbsp; ├── <span class="file">DriverFactory.java</span><br>
+            │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span class="file">ExcelReader.java</span><br>
+            │&nbsp;&nbsp; └── <span class="folder">📁 test/java/.../testing/</span><br>
+            │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── <span class="file">LoginTest.java</span><br>
+            │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── <span class="file">LoginDataDrivenTest.java</span><br>
+            ├── <span class="file">.gitignore</span><br>
+            ├── <span class="file">pom.xml</span><br>
+            ├── <span class="file">testng.xml</span><br>
+            └── <span class="file">Framework_Guide.html</span><br>
+            <br>
+            <span class="ignored">target/</span> &nbsp; <span class="badge badge-red">NOT uploaded</span><br>
+            <span class="ignored">logs/</span> &nbsp;&nbsp;&nbsp; <span class="badge badge-red">NOT uploaded</span><br>
+            <span class="ignored">reports/</span> &nbsp; <span class="badge badge-red">NOT uploaded</span><br>
+            <span class="ignored">screenshots/</span> <span class="badge badge-red">NOT uploaded</span>
+        </div>
+    </div>
+
+    <!-- Part 7: Daily Workflow -->
+    <div class="section" id="daily-workflow">
+        <h2><span class="icon" style="background:rgba(210,168,255,0.15)">🔁</span> Part 7: Daily Workflow</h2>
+        <p>After the initial setup, whenever you make changes:</p>
+        <pre><span class="label">PowerShell</span><code><span class="comment"># 1. Check what changed</span>
+git status
+
+<span class="comment"># 2. Add the changed files</span>
+git add .
+
+<span class="comment"># 3. Commit with a descriptive message</span>
+git commit -m "Added login validation test cases"
+
+<span class="comment"># 4. Push to GitHub</span>
+git push</code></pre>
+    </div>
+
+    <!-- Cheat Sheet -->
+    <div class="section" id="cheatsheet">
+        <h2><span class="icon" style="background:rgba(88,166,255,0.15)">📋</span> Cheat Sheet</h2>
+        <table>
+            <tr><th>Command</th><th>What It Does</th></tr>
+            <tr><td><code>git status</code></td><td>Shows modified / new / deleted files</td></tr>
+            <tr><td><code>git log --oneline -5</code></td><td>Shows last 5 commits in short format</td></tr>
+            <tr><td><code>git diff</code></td><td>Shows exactly what changed in files</td></tr>
+            <tr><td><code>git add filename.java</code></td><td>Add a specific file (instead of all)</td></tr>
+            <tr><td><code>git add .</code></td><td>Add all changed files</td></tr>
+            <tr><td><code>git commit -m "message"</code></td><td>Save a snapshot with a message</td></tr>
+            <tr><td><code>git push</code></td><td>Upload commits to GitHub</td></tr>
+            <tr><td><code>git pull</code></td><td>Download latest from GitHub</td></tr>
+        </table>
+    </div>
+
+    <!-- All Commands Summary -->
+    <div class="section" id="commands">
+        <h2><span class="icon" style="background:rgba(63,185,80,0.15)">📦</span> All Commands — Quick Copy</h2>
+
+        <div class="summary-box">
+            <h3>🔧 One-Time Setup (after installing Git)</h3>
+            <pre><code>git config --global user.name "Your Name"
+git config --global user.email "your-email@example.com"</code></pre>
+        </div>
+
+        <div class="summary-box">
+            <h3>🚀 First-Time Push</h3>
+            <pre><code>cd "l:\shiv\Tools\Eclipse\AutomationWebsite1"
+git init
+git add .
+git commit -m "Initial commit: Selenium TestNG automation framework"
+git remote add origin https://github.com/YOUR-USERNAME/AutomationWebsite1.git
+git branch -M main
+git push -u origin main</code></pre>
+        </div>
+
+        <div class="summary-box">
+            <h3>🔁 Daily Workflow</h3>
+            <pre><code>git add .
+git commit -m "describe your changes here"
+git push</code></pre>
+        </div>
+    </div>
+
+    <div style="text-align:center; padding: 40px; color: var(--text-muted); font-size: 13px;">
+        <p>📖 Learn more: <a href="https://docs.github.com/en/get-started" target="_blank">GitHub Docs</a> &nbsp;|&nbsp; <a href="https://education.github.com/git-cheat-sheet-education.pdf" target="_blank">Git Cheat Sheet (PDF)</a></p>
+        <p style="margin-top:8px;">Made for <strong style="color:var(--accent)">AutomationWebsite1</strong> project</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automation Framework Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            line-height: 1.7;
+            padding: 40px
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.2em;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 40px;
+            font-size: 1.1em
+        }
+
+        h2 {
+            color: #38bdf8;
+            font-size: 1.5em;
+            margin: 35px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #1e293b
+        }
+
+        h3 {
+            color: #a78bfa;
+            font-size: 1.2em;
+            margin: 20px 0 10px
+        }
+
+        h4 {
+            color: #fbbf24;
+            margin: 15px 0 8px
+        }
+
+        p {
+            margin: 8px 0
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em
+        }
+
+        th {
+            background: #1e293b;
+            color: #38bdf8;
+            padding: 10px 12px;
+            text-align: left;
+            border: 1px solid #334155
+        }
+
+        td {
+            padding: 9px 12px;
+            border: 1px solid #334155;
+            background: #1e293b80
+        }
+
+        tr:hover td {
+            background: #1e293b
+        }
+
+        code {
+            background: #1e293b;
+            color: #fbbf24;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em
+        }
+
+        pre {
+            background: #1e293b;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 12px 0;
+            border-left: 4px solid #38bdf8
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: #e2e8f0
+        }
+
+        .card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 15px 0;
+            border: 1px solid #334155
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600
+        }
+
+        .yes {
+            background: #059669;
+            color: #fff
+        }
+
+        .no {
+            background: #dc2626;
+            color: #fff
+        }
+
+        .warn {
+            background: #d97706;
+            color: #fff
+        }
+
+        .note {
+            background: #0c4a6e;
+            border: 1px solid #0284c7;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 12px 0
+        }
+
+        .tip {
+            background: #064e3b;
+            border: 1px solid #059669;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 12px 0
+        }
+
+        .flow {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 0.95em
+        }
+
+        .flow .step {
+            display: inline-block;
+            background: #0f172a;
+            border: 2px solid #38bdf8;
+            border-radius: 8px;
+            padding: 8px 14px;
+            margin: 4px;
+            color: #38bdf8;
+            font-weight: 600
+        }
+
+        .flow .arrow {
+            color: #94a3b8;
+            margin: 0 4px;
+            font-size: 1.3em
+        }
+
+        .star {
+            color: #fbbf24
+        }
+
+        .section-num {
+            color: #38bdf8;
+            font-weight: 700
+        }
+
+        ul {
+            margin: 8px 0 8px 24px
+        }
+
+        li {
+            margin: 4px 0
+        }
+
+        .tree {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #94a3b8
+        }
+
+        .tree .new {
+            color: #4ade80
+        }
+
+        .tree .exist {
+            color: #fbbf24
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                color: #1e293b;
+                padding: 20px
+            }
+
+            h1 {
+                -webkit-text-fill-color: #0f172a
+            }
+
+            h2 {
+                color: #0f172a
+            }
+
+            h3 {
+                color: #4338ca
+            }
+
+            h4 {
+                color: #92400e
+            }
+
+            .card,
+            .flow {
+                border: 1px solid #ccc;
+                background: #f8fafc
+            }
+
+            pre {
+                border-left-color: #0f172a
+            }
+
+            th {
+                background: #e2e8f0;
+                color: #0f172a
+            }
+
+            td {
+                background: #fff;
+                border-color: #e2e8f0
+            }
+
+            code {
+                background: #f1f5f9;
+                color: #92400e
+            }
+
+            .note,
+            .tip {
+                background: #f0f9ff
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <h1>🏗️ Automation Framework — Complete Guide</h1>
+        <p class="subtitle">AutomationWebsite1 | Every File Explained</p>
+
+        <!-- PROJECT STRUCTURE -->
+        <h2>📁 Project Structure</h2>
+        <div class="card">
+            <pre class="tree"><code>AutomationWebsite1/
+├── pom.xml                          ← Maven config
+├── testng.xml                       <span class="new">← [NEW] Suite runner</span>
+├── .gitignore                       ← Git ignore rules
+├── src/
+│   ├── main/
+│   │   ├── java/com/automationWebsite1/
+│   │   │   ├── base/
+│   │   │   │   └── BaseTest.java    <span class="new">← [NEW]</span>
+│   │   │   ├── pages/
+│   │   │   │   └── LoginPage.java   <span class="new">← [NEW]</span>
+│   │   │   └── utilities/
+│   │   │       ├── ConfigReader.java    <span class="exist">← existed</span>
+│   │   │       ├── DriverFactory.java   <span class="new">← [NEW]</span>
+│   │   │       ├── WaitUtils.java       <span class="new">← [NEW]</span>
+│   │   │       ├── ScreenshotUtils.java <span class="new">← [NEW]</span>
+│   │   │       ├── ExtentReportManager  <span class="new">← [NEW]</span>
+│   │   │       └── ExcelReader.java     <span class="new">← [NEW]</span>
+│   │   └── resources/
+│   │       ├── config.properties    <span class="exist">← existed</span>
+│   │       └── log4j2.xml           <span class="exist">← existed</span>
+│   └── test/java/.../testing/
+│       └── LoginTest.java           <span class="new">← [NEW]</span>
+├── target/                          ← Auto-generated bytecode
+├── logs/                            ← Log files
+├── reports/                         ← HTML reports
+└── screenshots/                     ← Failure screenshots</code></pre>
+        </div>
+
+        <!-- EXECUTION FLOW -->
+        <h2>⚡ Execution Flow</h2>
+        <div class="flow">
+            <div class="step">testng.xml</div><span class="arrow">→</span>
+            <div class="step">@BeforeSuite<br><small>Init Reports</small></div><span class="arrow">→</span>
+            <div class="step">@BeforeMethod<br><small>Config → Browser → URL</small></div><span class="arrow">→</span>
+            <div class="step">@Test<br><small>Your Test Runs</small></div><span class="arrow">→</span>
+            <div class="step">@AfterMethod<br><small>Screenshot → Quit</small></div><span class="arrow">→</span>
+            <div class="step">@AfterSuite<br><small>Generate Report</small></div>
+        </div>
+
+        <!-- PART 1 -->
+        <h2>📌 PART 1: Existing Files</h2>
+
+        <!-- POM.XML -->
+        <h3><span class="section-num">1.</span> 📦 pom.xml — Maven Configuration</h3>
+        <p><strong>Location:</strong> Project root &nbsp; <span class="badge yes">✅ Reusable</span></p>
+
+        <h4>&lt;properties&gt; Tag — Variables</h4>
+        <table>
+            <tr>
+                <th>Property</th>
+                <th>Value</th>
+                <th>What It Does</th>
+            </tr>
+            <tr>
+                <td><code>project.build.sourceEncoding</code></td>
+                <td>UTF-8</td>
+                <td>Read all files as UTF-8</td>
+            </tr>
+            <tr>
+                <td><code>maven.compiler.source</code></td>
+                <td>17</td>
+                <td>Compile using Java 17 syntax</td>
+            </tr>
+            <tr>
+                <td><code>maven.compiler.target</code></td>
+                <td>17</td>
+                <td>.class files run on Java 17+</td>
+            </tr>
+            <tr>
+                <td><code>selenium.version</code></td>
+                <td>4.27.0</td>
+                <td>Version variable — use as <code>${selenium.version}</code></td>
+            </tr>
+            <tr>
+                <td><code>testng.version</code></td>
+                <td>7.10.2</td>
+                <td>Version variable for TestNG</td>
+            </tr>
+            <tr>
+                <td><code>extentreports.version</code></td>
+                <td>5.1.2</td>
+                <td>Version variable for ExtentReports</td>
+            </tr>
+            <tr>
+                <td><code>log4j.version</code></td>
+                <td>2.24.3</td>
+                <td>Version variable for Log4j</td>
+            </tr>
+            <tr>
+                <td><code>webdrivermanager.version</code></td>
+                <td>5.9.2</td>
+                <td>Version variable for WebDriverManager</td>
+            </tr>
+        </table>
+
+        <h4>&lt;dependencies&gt; Tag — External Libraries</h4>
+        <table>
+            <tr>
+                <th>Dependency</th>
+                <th>What It Provides</th>
+            </tr>
+            <tr>
+                <td><code>selenium-java</code></td>
+                <td>WebDriver API — controls browsers (click, type, navigate)</td>
+            </tr>
+            <tr>
+                <td><code>testng</code></td>
+                <td>Test framework — @Test, @BeforeMethod, assertions, parallel execution</td>
+            </tr>
+            <tr>
+                <td><code>extentreports</code></td>
+                <td>Generates beautiful HTML test reports with charts</td>
+            </tr>
+            <tr>
+                <td><code>log4j-core</code></td>
+                <td>Log4j engine — actually writes logs to console/file</td>
+            </tr>
+            <tr>
+                <td><code>log4j-api</code></td>
+                <td>Log4j interface — LogManager.getLogger(), logger.info()</td>
+            </tr>
+            <tr>
+                <td><code>webdrivermanager</code></td>
+                <td>Auto-downloads correct ChromeDriver/GeckoDriver</td>
+            </tr>
+        </table>
+
+        <h4>Each dependency has 3 required parts:</h4>
+        <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;  &lt;!-- Company --&gt;
+    &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;       &lt;!-- Library name --&gt;
+    &lt;version&gt;${selenium.version}&lt;/version&gt;       &lt;!-- Version --&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;                       &lt;!-- When to use --&gt;
+&lt;/dependency&gt;</code></pre>
+
+        <!-- TARGET -->
+        <h3><span class="section-num">2.</span> 📁 target/ — Compiled Output</h3>
+        <p><strong>Location:</strong> Project root &nbsp; <span class="badge no">❌ Never copy</span></p>
+        <p>When Maven/Eclipse <strong>compiles</strong> your .java files, the compiled .class (bytecode) files go here.
+        </p>
+        <table>
+            <tr>
+                <th>Subfolder</th>
+                <th>Source</th>
+                <th>Contains</th>
+            </tr>
+            <tr>
+                <td><code>target/classes/</code></td>
+                <td>src/main/java + resources</td>
+                <td>Compiled main code + config.properties, log4j2.xml</td>
+            </tr>
+            <tr>
+                <td><code>target/test-classes/</code></td>
+                <td>src/test/java</td>
+                <td>Compiled test code</td>
+            </tr>
+        </table>
+        <div class="note">
+            <strong>📝 Key Points:</strong> JVM runs .class files, NOT .java files. <code>target/</code> is in
+            .gitignore — never commit it. Run <code>mvn clean</code> to delete and regenerate.
+        </div>
+
+        <!-- CONFIG.PROPERTIES -->
+        <h3><span class="section-num">3.</span> 📄 config.properties</h3>
+        <p><strong>Location:</strong> src/main/resources/ &nbsp; <span class="badge yes">✅ Reusable</span></p>
+        <p>Stores all configurable values — <strong>never hardcode in Java</strong>.</p>
+        <pre><code>browser=chrome          # Which browser to use
+headless=false          # Run without visible window?
+baseUrl=https://www.facebook.com/
+implicitWait=10         # Seconds to wait
+explicitWait=15
+screenshotOnFailure=true</code></pre>
+        <p><strong>Why:</strong> Change <code>browser=firefox</code> → entire suite runs on Firefox. No code changes!
+        </p>
+
+        <!-- LOG4J2 -->
+        <h3><span class="section-num">4.</span> 📄 log4j2.xml — Logging Config</h3>
+        <p><strong>Location:</strong> src/main/resources/ &nbsp; <span class="badge yes">✅ Reusable</span></p>
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>What It Does</th>
+            </tr>
+            <tr>
+                <td>Console Appender</td>
+                <td>Prints logs to Eclipse console</td>
+            </tr>
+            <tr>
+                <td>File Appender</td>
+                <td>Writes logs to <code>logs/automation.log</code> (fresh each run)</td>
+            </tr>
+            <tr>
+                <td>com.automation Logger (DEBUG)</td>
+                <td>YOUR code logs everything in detail</td>
+            </tr>
+            <tr>
+                <td>Root Logger (INFO)</td>
+                <td>External libraries only log important stuff</td>
+            </tr>
+        </table>
+        <p><strong>Why:</strong> System.out.println() has no timestamps or levels. Log4j gives:
+            <code>2026-05-15 19:30:00 [main] INFO BaseTest - Browser launched</code>
+        </p>
+
+        <!-- GITIGNORE -->
+        <h3><span class="section-num">5.</span> 📄 .gitignore</h3>
+        <p><strong>Location:</strong> Project root &nbsp; <span class="badge yes">✅ Reusable</span></p>
+        <table>
+            <tr>
+                <th>Ignored</th>
+                <th>Why</th>
+            </tr>
+            <tr>
+                <td><code>target/</code></td>
+                <td>Auto-generated, regenerated every build</td>
+            </tr>
+            <tr>
+                <td><code>.settings/, .project, .classpath</code></td>
+                <td>Eclipse IDE settings (each dev has own)</td>
+            </tr>
+            <tr>
+                <td><code>logs/, reports/, screenshots/</code></td>
+                <td>Generated output — different every run</td>
+            </tr>
+            <tr>
+                <td><code>*.log</code></td>
+                <td>Log files change every execution</td>
+            </tr>
+        </table>
+
+        <!-- CONFIGREADER -->
+        <h3><span class="section-num">6.</span> ☕ ConfigReader.java</h3>
+        <p><strong>Location:</strong> src/main/java/.../utilities/ &nbsp; <span class="badge yes">✅ Reusable</span></p>
+        <p>Bridge between config.properties and Java code:</p>
+        <pre><code>ConfigReader configReader = new ConfigReader();
+Properties prop = configReader.init_prop();
+String browser = prop.getProperty("browser");  // "chrome"</code></pre>
+
+        <!-- OUTPUT FOLDERS -->
+        <h3><span class="section-num">7.</span> 📁 Output Folders</h3>
+        <table>
+            <tr>
+                <th>Folder</th>
+                <th>Written By</th>
+                <th>Contains</th>
+            </tr>
+            <tr>
+                <td><code>logs/</code></td>
+                <td>Log4j</td>
+                <td>automation.log — full text log</td>
+            </tr>
+            <tr>
+                <td><code>reports/</code></td>
+                <td>ExtentReportManager</td>
+                <td>TestReport.html — HTML report with charts</td>
+            </tr>
+            <tr>
+                <td><code>screenshots/</code></td>
+                <td>ScreenshotUtils</td>
+                <td>testName_timestamp.png — failure screenshots</td>
+            </tr>
+        </table>
+
+        <!-- PART 2 -->
+        <h2>🆕 PART 2: Newly Created Files</h2>
+
+        <!-- DRIVERFACTORY -->
+        <h3><span class="section-num">8.</span> ☕ DriverFactory.java <span class="star">⭐</span></h3>
+        <p><strong>Location:</strong> src/main/java/.../utilities/ &nbsp; <span class="badge yes">✅ Reusable</span></p>
+        <div class="card">
+            <p><strong>What:</strong> Launches Chrome/Firefox/Edge based on config. Uses
+                <code>ThreadLocal&lt;WebDriver&gt;</code> for parallel-safe execution.
+            </p>
+            <p><strong>Why:</strong> Without this, you'd write 40+ lines of browser setup in EVERY test class.</p>
+            <pre><code>DriverFactory df = new DriverFactory();
+WebDriver driver = df.initDriver(prop);   // Launch browser
+DriverFactory.getDriver();                // Get driver anywhere
+DriverFactory.quitDriver();               // Close + prevent leak</code></pre>
+        </div>
+
+        <!-- WAITUTILS -->
+        <h3><span class="section-num">9.</span> ☕ WaitUtils.java <span class="star">⭐</span></h3>
+        <p><strong>Location:</strong> src/main/java/.../utilities/ &nbsp; <span class="badge yes">✅ Reusable</span></p>
+        <div class="card">
+            <p><strong>What:</strong> Replaces Thread.sleep() with intelligent explicit waits.</p>
+            <table>
+                <tr>
+                    <th>❌ Thread.sleep(5000)</th>
+                    <th>✅ waitForClickable(locator)</th>
+                </tr>
+                <tr>
+                    <td>Always waits 5 seconds</td>
+                    <td>Waits only until element is ready</td>
+                </tr>
+                <tr>
+                    <td>Wastes time / too short</td>
+                    <td>Returns immediately when ready</td>
+                </tr>
+            </table>
+            <pre><code>WaitUtils wait = new WaitUtils(driver, 15);
+wait.waitForVisible(By.id("email"));         // Wait to see
+wait.waitForClickable(By.id("submit"));      // Wait to click
+wait.waitForInvisible(By.className("spinner"));  // Wait to disappear
+wait.waitForAlert();                         // Wait for popup</code></pre>
+            <p><strong>Why:</strong> #1 reason for flaky tests is improper waiting.</p>
+        </div>
+
+        <!-- SCREENSHOTUTILS -->
+        <h3><span class="section-num">10.</span> ☕ ScreenshotUtils.java</h3>
+        <p><strong>Location:</strong> src/main/java/.../utilities/ &nbsp; <span class="badge yes">✅ Reusable</span></p>
+        <div class="card">
+            <p><strong>What:</strong> Captures browser screenshot on failure. Saves as
+                <code>screenshots/testName_20260515_193000.png</code>
+            </p>
+            <p><strong>Why:</strong> In CI/CD (no monitor), screenshots show EXACTLY what went wrong.</p>
+        </div>
+
+        <!-- EXTENTREPORTMANAGER -->
+        <h3><span class="section-num">11.</span> ☕ ExtentReportManager.java</h3>
+        <p><strong>Location:</strong> src/main/java/.../utilities/ &nbsp; <span class="badge yes">✅ Reusable</span></p>
+        <div class="card">
+            <p><strong>What:</strong> Generates interactive HTML report at <code>reports/TestReport.html</code> with
+                pass/fail charts, system info, and failure screenshots.</p>
+            <pre><code>ExtentReportManager.initReporter();           // @BeforeSuite
+ExtentReportManager.createTest("Login Test"); // Each @Test
+ExtentReportManager.getTest().pass("OK");     // Log result
+ExtentReportManager.flushReporter();          // @AfterSuite</code></pre>
+        </div>
+
+        <!-- BASETEST -->
+        <h3><span class="section-num">12.</span> ☕ BaseTest.java <span class="star">⭐⭐⭐ Most Important</span></h3>
+        <p><strong>Location:</strong> src/main/java/.../base/ &nbsp; <span class="badge yes">✅ Reusable</span></p>
+        <div class="card">
+            <p><strong>What:</strong> Parent class ALL tests extend. Handles everything automatically:</p>
+            <table>
+                <tr>
+                    <th>Annotation</th>
+                    <th>What Happens</th>
+                    <th>When</th>
+                </tr>
+                <tr>
+                    <td><code>@BeforeSuite</code></td>
+                    <td>Initialize ExtentReports</td>
+                    <td>Once at start</td>
+                </tr>
+                <tr>
+                    <td><code>@BeforeMethod</code></td>
+                    <td>Load config → Launch browser → Open URL</td>
+                    <td>Before EACH test</td>
+                </tr>
+                <tr>
+                    <td><code>@AfterMethod</code></td>
+                    <td>Screenshot on failure → Close browser</td>
+                    <td>After EACH test</td>
+                </tr>
+                <tr>
+                    <td><code>@AfterSuite</code></td>
+                    <td>Generate HTML report</td>
+                    <td>Once at end</td>
+                </tr>
+            </table>
+            <pre><code>// Just extend BaseTest — everything is automatic!
+public class LoginTest extends BaseTest {
+    @Test
+    public void testLogin() {
+        // driver, prop, logger are all ready!
+        driver.findElement(By.id("email")).sendKeys("test");
+    }
+    // Browser closes automatically after this
+}</code></pre>
+        </div>
+
+        <!-- LOGINPAGE -->
+        <h3><span class="section-num">13.</span> ☕ LoginPage.java — Page Object Pattern</h3>
+        <p><strong>Location:</strong> src/main/java/.../pages/ &nbsp; <span class="badge warn">⚠️ Pattern
+                reusable</span></p>
+        <div class="card">
+            <table>
+                <tr>
+                    <th>LoginPage.java (Locators + Actions)</th>
+                    <th>LoginTest.java (Clean Tests)</th>
+                </tr>
+                <tr>
+                    <td>emailField = By.id("email")<br>enterEmail(String email)<br>clickLogin()</td>
+                    <td>loginPage.enterEmail("test")<br>loginPage.clickLogin()<br>// No locators here!</td>
+                </tr>
+            </table>
+            <p><strong>Why:</strong> If Facebook changes <code>id="email"</code> → fix in ONE place, not 30 tests.</p>
+        </div>
+
+        <!-- EXCELREADER -->
+        <h3><span class="section-num">14.</span> ☕ ExcelReader.java + @DataProvider — Parameterization ⭐</h3>
+        <p><strong>Location:</strong> src/main/java/.../utilities/ &nbsp; <span class="badge yes">✅ Reusable</span></p>
+        <div class="card">
+            <p><strong>What:</strong> Reads test data from <code>.xlsx</code> Excel files. Used with TestNG
+                <code>@DataProvider</code> to run the same test with multiple data sets.</p>
+            <p><strong>Flow:</strong></p>
+            <pre><code>Excel File (.xlsx)  →  ExcelReader  →  @DataProvider  →  @Test
+┌──────────────┐   ┌─────────────┐   ┌─────────────┐   ┌──────────┐
+│ email | pass │ → │getTestData()│ → │returns rows │ → │runs once │
+│ user1 | 123  │   │reads Excel  │   │as Object[][]│   │per row   │
+│ user2 | 456  │   │skips header │   │             │   │          │
+└──────────────┘   └─────────────┘   └─────────────┘   └──────────┘</code></pre>
+            <p><strong>Usage in test class:</strong></p>
+            <pre><code>@DataProvider(name = "loginData")
+public Object[][] getLoginData() {
+    return ExcelReader.getTestData("src/test/resources/testdata.xlsx", "LoginData");
+}
+
+@Test(dataProvider = "loginData")
+public void testLogin(String email, String password) {
+    loginPage.enterEmail(email);    // "user1@test.com" (row 1)
+    loginPage.enterPassword(password); // "Pass123"
+    // Test runs AGAIN with row 2, row 3, etc.
+}</code></pre>
+            <p><strong>Dependency:</strong> Apache POI (<code>poi-ooxml 5.5.1</code>) added to pom.xml</p>
+            <p><strong>Why:</strong> Testers can add/edit test data in Excel without touching Java code.</p>
+        </div>
+
+        <!-- TESTNG.XML -->
+        <h3><span class="section-num">15.</span> 📄 testng.xml — Suite Runner</h3>
+        <p><strong>Location:</strong> Project root &nbsp; <span class="badge yes">✅ Reusable</span></p>
+        <div class="card">
+            <pre><code>&lt;suite name="..." parallel="methods" thread-count="2"&gt;
+    &lt;test name="Facebook Tests"&gt;
+        &lt;classes&gt;
+            &lt;class name="com...testing.LoginTest"/&gt;
+        &lt;/classes&gt;
+    &lt;/test&gt;
+&lt;/suite&gt;</code></pre>
+            <p><strong>Why:</strong> Run entire suite with one click. Control parallel execution and grouping.</p>
+        </div>
+
+        <!-- PACKAGE GUIDE -->
+        <h2>📦 Package Placement Guide</h2>
+        <table>
+            <tr>
+                <th>Package</th>
+                <th>What Goes Here</th>
+                <th>Examples</th>
+            </tr>
+            <tr>
+                <td><code>utilities/</code></td>
+                <td>Reusable helpers (no test logic)</td>
+                <td>ConfigReader, DriverFactory, WaitUtils, ExcelReader</td>
+            </tr>
+            <tr>
+                <td><code>base/</code></td>
+                <td>Base/parent classes</td>
+                <td>BaseTest</td>
+            </tr>
+            <tr>
+                <td><code>pages/</code></td>
+                <td>Page Objects (one per page)</td>
+                <td>LoginPage, HomePage</td>
+            </tr>
+            <tr>
+                <td><code>testing/</code></td>
+                <td>Test classes with @Test</td>
+                <td>LoginTest, RegistrationTest</td>
+            </tr>
+            <tr>
+                <td><code>resources/</code></td>
+                <td>Config files (no Java)</td>
+                <td>config.properties, log4j2.xml</td>
+            </tr>
+        </table>
+
+        <!-- SUMMARY -->
+        <h2>📋 Complete Summary</h2>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>File</th>
+                <th>Reusable?</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>pom.xml</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>Dependencies + build settings</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>target/</td>
+                <td><span class="badge no">❌</span></td>
+                <td>Auto-generated bytecode</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>config.properties</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>All settings in one place</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>log4j2.xml</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>Logging configuration</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>.gitignore</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>Files to exclude from Git</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>ConfigReader.java</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>Read config file</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>logs/, reports/, screenshots/</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>Output directories</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>DriverFactory.java</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>Browser management</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>WaitUtils.java</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>Smart explicit waits</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>ScreenshotUtils.java</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>Failure screenshots</td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td>ExtentReportManager.java</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>HTML test reports</td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td>BaseTest.java</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>Setup/teardown automation</td>
+            </tr>
+            <tr>
+                <td>13</td>
+                <td>LoginPage.java</td>
+                <td><span class="badge warn">⚠️</span></td>
+                <td>Page Object example</td>
+            </tr>
+            <tr>
+                <td>14</td>
+                <td>ExcelReader.java</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>Read test data from Excel</td>
+            </tr>
+            <tr>
+                <td>15</td>
+                <td>testng.xml</td>
+                <td><span class="badge yes">✅</span></td>
+                <td>Suite runner</td>
+            </tr>
+        </table>
+
+        <div class="tip">
+            <strong>💡 Tip:</strong> To start <strong>AutomationWebsite2</strong> — copy everything except target/,
+            LoginPage.java, and test classes. Create new Page Objects and Tests for the new website.
+        </div>
+
+        <p style="text-align:center;color:#64748b;margin-top:40px;font-size:0.9em">
+            📄 To save as PDF: Press <strong>Ctrl + P</strong> → Select "Save as PDF" → Click Save
+        </p>
+
+    </div>
+</body>
+
+</html>

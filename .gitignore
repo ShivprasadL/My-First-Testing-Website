@@ -1,0 +1,38 @@
+# ========================
+# Eclipse Specific
+# ========================
+.metadata
+.settings/
+.project
+.classpath
+bin/
+
+# ========================
+# Maven Specific
+# ========================
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+dependency-reduced-pom.xml
+
+# ========================
+# Automation Framework Specific
+# ========================
+test-output/
+logs/
+reports/
+screenshots/
+*.log
+
+# ========================
+# OS Specific
+# ========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

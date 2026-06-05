@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        <File name="FileLogger" fileName="logs/automation.log" append="false">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.automation" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FileLogger"/>
+        </Logger>
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FileLogger"/>
+        </Root>
+    </Loggers>
+</Configuration>
+
+
+
+
+<!-- this Log4j2 XML configuration is **fully correct** and excellently structured for a test automation framework.
+
+This file (typically named `log4j2.xml` and placed in your `src/main/resources` folder) correctly maps out how and where your logs should be generated.
+
+Here is a breakdown of why this configuration is solid:
+
+### 1. Appenders (Where the logs go)
+
+* **Console Appender:** You have properly configured it to print logs to the standard Eclipse console (`SYSTEM_OUT`).
+* **File Appender:** It correctly points to the `logs` folder you created earlier (`logs/automation.log`).
+* *Note on `append="false"`:* This is a good choice for test automation. It means that every time you run your test suite, it will overwrite the old log file with a fresh one. This prevents your log file from growing to gigabytes in size over time.
+
+
+
+### 2. Loggers (What gets logged)
+
+* **Custom Logger (`com.automation`):** Setting this to `DEBUG` means that any code you write inside a package starting with `com.automation` will print highly detailed logs.
+* *Note on `additivity="false"`:* This is a great addition. It ensures that logs from your package don't get printed twice (once by your logger and once by the Root logger).
+
+
+* **Root Logger:** Setting this to `INFO` is perfect. It means that all the external libraries you use (like Selenium, WebDriverManager, Apache POI) will only print important information and won't spam your console with thousands of lines of their own debug background noise.
+
+### 3. Pattern Layout
+
+Your pattern (`%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n`) is the industry standard. It will produce clean, readable log lines that include the exact date, time, thread, log level, class name, and your specific message.
+
+-->
