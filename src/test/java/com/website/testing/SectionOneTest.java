@@ -19,7 +19,7 @@ public class SectionOneTest extends BaseTest {
         sec1Page = new Sec1_BasicForm_Page(getDriver());
     }
 
-    @Test(priority=1, description="Test Case -------------> Verify Heading Of Section one")
+    @Test(priority=1, description=" Test Case -------------> Verify Heading Of Section one")
     public void verifySectionOneHeading() {
         String actualHeading = sec1Page.getSec1HeadingText();
         Assert.assertEquals(actualHeading, "Section 1: Basic Form Elements", 
@@ -28,7 +28,7 @@ public class SectionOneTest extends BaseTest {
 
     @DataProvider(name = "userData")
     public Object[][] getUserData() {
-        String excelFilePath = "src/main/resources/testdata.xlsx";
+        String excelFilePath = "src/test/resources/testdata.xlsx";
         String sheetName = "LoginData"; 
         return ExcelReader.getTestData(excelFilePath, sheetName);
     }
@@ -87,7 +87,7 @@ public class SectionOneTest extends BaseTest {
         softAssert.assertAll();
     }
     
-    @Test(priority=3, description="Test Case -------------> Verify Reset message in section one")
+    @Test(priority=3, description=" Test Case -------------> Verify Reset message in section one")
     public void verifyResetMessage() {
     	sec1Page.clickOnResetFormButton();
     	String resetMessage= sec1Page.isResetSuccessMessageDisplayed();

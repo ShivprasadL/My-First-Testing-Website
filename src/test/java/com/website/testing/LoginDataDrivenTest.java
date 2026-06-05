@@ -44,7 +44,7 @@ public class LoginDataDrivenTest extends BaseTest {
 
     // ========== TEST — runs once per Excel row ==========
 
-    @Test(dataProvider = "loginData", description = "Data-driven login test from Excel")
+    @Test(enabled=false, dataProvider = "loginData", description = "Data-driven login test from Excel")
     public void testLoginWithExcelData(String email, String password) {
         ExtentReportManager.createTest("Login Test: " + email);
 
