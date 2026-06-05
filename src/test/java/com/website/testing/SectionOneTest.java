@@ -28,7 +28,7 @@ public class SectionOneTest extends BaseTest {
 
     @DataProvider(name = "userData")
     public Object[][] getUserData() {
-        String excelFilePath = "src/main/resources/testdata.xlsx";
+        String excelFilePath = "src/test/resources/testdata.xlsx";
         String sheetName = "LoginData"; 
         return ExcelReader.getTestData(excelFilePath, sheetName);
     }
