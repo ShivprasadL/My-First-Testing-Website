@@ -42,7 +42,8 @@ public class DriverFactory {
 
         case "chrome":
             // Forces WebDriverManager to read the actual browser version on the host machine
-        	WebDriverManager.chromedriver().browserVersion("").setup();
+        	//WebDriverManager.chromedriver().browserVersion("").setup();
+        	WebDriverManager.chromedriver().forceDownload().setup();
         	ChromeOptions chromeOptions = new ChromeOptions();
 
         	// Force headless mode specifically when executing inside cloud runners
