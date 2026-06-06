@@ -1,36 +1,35 @@
 name: TestNG QA Automation Pipeline
 
-# Triggers this pipeline automatically whenever a Pull Request is opened or updated targeting 'main'
 on:
   pull_request:
     branches: [ main ]
-  workflow_dispatch: # Allows you to manually trigger the build with a button click on GitHub
+  workflow_dispatch: 
+
+# ADD THIS BLOCK TO GRANT WRITE PERMISSIONS TO THE REPORTING PLUGIN
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
 
 jobs:
   run-automation-suite:
-    # Spins up a fresh, isolated Windows cloud virtual machine
     runs-on: windows-latest
-
     steps:
-    # Step 1: Download your source code onto the cloud runner machine
     - name: Checkout Repository Source Code
       uses: actions/checkout@v4
 
-    # Step 2: Dynamically install Java on the cloud virtual machine
     - name: Setup Java JDK Environment
       uses: actions/setup-java@v4
       with:
-        java-version: '17'            # Matches your target compilation profile
-        distribution: 'temurin'       # Uses Eclipse Temurin, just like your local setup
-        cache: 'maven'                # Caches your dependencies so subsequent runs take seconds
+        java-version: '17'            
+        distribution: 'temurin'       
+        cache: 'maven'                
 
-    # Step 3: Execute your TestNG test cases via Maven command line
     - name: Execute Automation Tests
       run: mvn clean test
 
-    # Step 4: Publish your test outputs right into your Pull Request window
     - name: Publish Test Reports Summary
       uses: EnricoMi/publish-unit-test-result-action/composite@v2
-      if: always() # Ensures reports are generated even if your code throws test failures
+      if: always() 
       with:
         files: '**/target/surefire-reports/*.xml'

@@ -38,41 +38,59 @@ public class DriverFactory {
         String browserName = prop.getProperty("browser", "chrome").trim().toLowerCase();
         boolean headless = Boolean.parseBoolean(prop.getProperty("headless", "false").trim());
 
-        switch (browserName) {
-            case "chrome":
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions chromeOptions = new ChromeOptions();
-                if (headless) {
-                    chromeOptions.addArguments("--headless=new");
-                }
-                chromeOptions.addArguments("--start-maximized");
-                chromeOptions.addArguments("--disable-notifications");
-                tlDriver.set(new ChromeDriver(chromeOptions));
-                break;
+        switch (browserName.toLowerCase()) {
 
-            case "firefox":
-                WebDriverManager.firefoxdriver().setup();
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                if (headless) {
-                    firefoxOptions.addArguments("--headless");
-                }
-                tlDriver.set(new FirefoxDriver(firefoxOptions));
-                break;
+        case "chrome":
+            // Forces WebDriverManager to read the actual browser version on the host machine
+            WebDriverManager.chromedriver().browserVersion("").setup();
+            ChromeOptions chromeOptions = new ChromeOptions();
+            
+            // Dynamic Headless checking for your local/Jenkins execution
+            if (headless) {
+                chromeOptions.addArguments("--headless=new");
+            }
+            // Essential flags to prevent crashes on GitHub cloud machines
+            chromeOptions.addArguments("--disable-gpu");
+            chromeOptions.addArguments("--no-sandbox");
+            chromeOptions.addArguments("--disable-dev-shm-usage");
+            
+            chromeOptions.addArguments("--start-maximized");
+            chromeOptions.addArguments("--disable-notifications");
+            tlDriver.set(new ChromeDriver(chromeOptions));
+            break;
 
-            case "edge":
-                WebDriverManager.edgedriver().setup();
-                EdgeOptions edgeOptions = new EdgeOptions();
-                if (headless) {
-                    edgeOptions.addArguments("--headless=new");
-                }
-                edgeOptions.addArguments("--start-maximized");
-                edgeOptions.addArguments("--disable-notifications");
-                tlDriver.set(new EdgeDriver(edgeOptions));
-                break;
+        case "firefox":
+            // Fixes Firefox driver matching for GitHub Actions
+            WebDriverManager.firefoxdriver().browserVersion("").setup();
+            FirefoxOptions firefoxOptions = new FirefoxOptions();
+            
+            if (headless) {
+                firefoxOptions.addArguments("-headless");
+            }
+            // Essential for server nodes
+            firefoxOptions.addArguments("--disable-gpu");
+            
+            tlDriver.set(new FirefoxDriver(firefoxOptions));
+            break;
 
-            default:
-                throw new IllegalArgumentException("Browser not supported: " + browserName);
-        }
+        case "edge":
+            // Fixes Edge driver matching for GitHub Actions
+            WebDriverManager.edgedriver().browserVersion("").setup();
+            EdgeOptions edgeOptions = new EdgeOptions();
+            
+            if (headless) {
+                edgeOptions.addArguments("--headless=new");
+            }
+            // Essential for server nodes
+            edgeOptions.addArguments("--disable-gpu");
+            edgeOptions.addArguments("--no-sandbox");
+            
+            tlDriver.set(new EdgeDriver(edgeOptions));
+            break;
+
+        default:
+            throw new IllegalArgumentException("Browser : " + browserName + " is not supported.");
+    }
 
         // Apply implicit wait from config.properties
         int implicitWait = Integer.parseInt(prop.getProperty("implicitWait", "10").trim());
