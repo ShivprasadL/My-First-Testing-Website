@@ -5,6 +5,12 @@ on:
     branches: [ main ]
   workflow_dispatch: 
 
+# FIXED: Grants explicit permissions to publish the test results seamlessly
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
 jobs:
   run-automation-suite:
     runs-on: windows-latest
@@ -23,6 +29,7 @@ jobs:
     - name: Execute Automation Tests
       run: mvn clean test
 
+    # FIXED: Re-aligned the composite workflow track parameter
     - name: Publish Test Reports Summary
       uses: EnricoMi/publish-unit-test-result-action/composite@v2
       if: always() 
