@@ -5,7 +5,7 @@ on:
     branches: [ main ]
   workflow_dispatch: 
 
-# FIXED: Grants explicit permissions to publish the test results seamlessly
+# Grants explicit write permissions so the reporting engine can post summaries
 permissions:
   contents: read
   checks: write
@@ -29,9 +29,9 @@ jobs:
     - name: Execute Automation Tests
       run: mvn clean test
 
-    # FIXED: Re-aligned the composite workflow track parameter
+    # Optimized to scan exclusively for compatible Surefire JUnit report files
     - name: Publish Test Reports Summary
       uses: EnricoMi/publish-unit-test-result-action/composite@v2
       if: always() 
       with:
-        files: '**/target/surefire-reports/*.xml'
+        files: '**/target/surefire-reports/TEST-*.xml'

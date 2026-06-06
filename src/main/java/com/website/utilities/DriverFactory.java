@@ -42,21 +42,21 @@ public class DriverFactory {
 
         case "chrome":
             // Forces WebDriverManager to read the actual browser version on the host machine
-            WebDriverManager.chromedriver().browserVersion("").setup();
-            ChromeOptions chromeOptions = new ChromeOptions();
-            
-            // Dynamic Headless checking for your local/Jenkins execution
-            if (headless) {
-                chromeOptions.addArguments("--headless=new");
-            }
-            // Essential flags to prevent crashes on GitHub cloud machines
-            chromeOptions.addArguments("--disable-gpu");
-            chromeOptions.addArguments("--no-sandbox");
-            chromeOptions.addArguments("--disable-dev-shm-usage");
-            
-            chromeOptions.addArguments("--start-maximized");
-            chromeOptions.addArguments("--disable-notifications");
-            tlDriver.set(new ChromeDriver(chromeOptions));
+        	WebDriverManager.chromedriver().browserVersion("").setup();
+        	ChromeOptions chromeOptions = new ChromeOptions();
+
+        	// Force headless mode specifically when executing inside cloud runners
+        	if (headless || System.getenv("GITHUB_ACTIONS") != null) {
+        	    chromeOptions.addArguments("--headless=new");
+        	}
+
+        	chromeOptions.addArguments("--disable-gpu");
+        	chromeOptions.addArguments("--no-sandbox");
+        	chromeOptions.addArguments("--disable-dev-shm-usage");
+        	chromeOptions.addArguments("--start-maximized");
+        	chromeOptions.addArguments("--disable-notifications");
+
+        	tlDriver.set(new ChromeDriver(chromeOptions));
             break;
 
         case "firefox":
