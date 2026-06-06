@@ -21,16 +21,14 @@ pipeline {
     
     post {
         always {
-junit '**/target/surefire-reports/*.xml'
+            junit '**/target/surefire-reports/*.xml'
             
             script {
-                // This is a direct, robust way to send a message without plugin UI issues
-                sh """
-                curl -H 'Content-Type: application/json' \
-                -X POST -d '{"text": "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} finished. Status: ${currentBuild.currentResult}. URL: ${env.BUILD_URL}"}' \
-                'https://chat.google.com/app/chat/AAQARjeJUiQ'
+                // Using 'bat' for Windows compatibility
+                // Note: Windows 'curl' requires double quotes for JSON data
+                bat """
+                curl -H "Content-Type: application/json" -X POST -d "{\\"text\\": \\"Build ${env.JOB_NAME} #${env.BUILD_NUMBER} finished. Status: ${currentBuild.currentResult}. URL: ${env.BUILD_URL}\\"}" https://chat.google.com/app/chat/AAQARjeJUiQ
                 """
-                )
             }
         }
     }
