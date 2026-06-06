@@ -2,21 +2,18 @@ pipeline {
     agent any
 
     tools {
-        // Tells Jenkins to use Maven (We will name it 'Maven3' in Jenkins next)
         maven 'Maven3'
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                // Jenkins automatically checks out code from your SCM settings
                 checkout scm
             }
         }
 
         stage('Execute Automation Tests') {
             steps {
-                // This runs your Maven test suite
                 bat 'mvn clean test' 
             }
         }
@@ -24,8 +21,21 @@ pipeline {
     
     post {
         always {
-            // This captures your test results and creates charts in Jenkins
+            // Capture TestNG/JUnit results
             junit '**/target/surefire-reports/*.xml'
+            
+            // Send Notification
+            script {
+                // Use the ID you created in Jenkins Credentials
+                withCredentials([string(credentialsId: 'google-chat-token', variable: 'CHAT_TOKEN')]) {
+                    googlechatnotification(
+                        // This handles the authentication using the token
+                        url: "https://chat.googleapis.com/v1/spaces/YOUR_SPACE_ID/messages?key=${CHAT_TOKEN}",
+                        message: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} finished. Status: ${currentBuild.currentResult}. URL: ${env.BUILD_URL}",
+                        spaceId: 'YOUR_SPACE_ID' // Replace with your actual Space ID
+                    )
+                }
+            }
         }
     }
 }
