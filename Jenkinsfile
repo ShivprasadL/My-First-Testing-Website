@@ -25,7 +25,8 @@ pipeline {
     post {
         always {
             // This captures your test results and creates charts in Jenkins
-            junit '**/target/surefire-reports/*.xml'
+	            junit '**/target/surefire-reports/*.xml'
+//removed script for google chat
         }
     }
 }
