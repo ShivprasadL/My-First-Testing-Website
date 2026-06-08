@@ -40,7 +40,7 @@ public class DriverFactory {
 
         switch (browserName) {
             case "chrome":
-                WebDriverManager.chromedriver().setup();
+                //WebDriverManager.chromedriver().setup();
                 ChromeOptions chromeOptions = new ChromeOptions();
                 if (headless) {
                     chromeOptions.addArguments("--headless=new");
