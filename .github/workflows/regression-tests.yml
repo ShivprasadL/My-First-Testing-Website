@@ -5,6 +5,12 @@ on:
     branches: [ main ]
   workflow_dispatch: 
 
+# Grants explicit write permissions so the reporting engine can post summaries
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
 jobs:
   run-automation-suite:
     runs-on: windows-latest
@@ -23,8 +29,9 @@ jobs:
     - name: Execute Automation Tests
       run: mvn clean test
 
+    # Optimized to scan exclusively for compatible Surefire JUnit report files
     - name: Publish Test Reports Summary
       uses: EnricoMi/publish-unit-test-result-action/composite@v2
       if: always() 
       with:
-        files: '**/target/surefire-reports/*.xml'
+        files: '**/target/surefire-reports/TEST-*.xml'
