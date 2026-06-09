@@ -29,6 +29,9 @@ steps:
     publishLocation: 'Container'
   condition: always() # This ensures it saves even if tests fail!
 
+- script: dir $(System.DefaultWorkingDirectory) /s
+  displayName: 'List all files to find the report path'
+
 - task: PublishHtmlReport@1
   inputs:
     # This points to the folder where your index.html/emailable-report.html lives
