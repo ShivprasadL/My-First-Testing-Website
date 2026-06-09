@@ -21,3 +21,10 @@ steps:
     goals: 'clean test'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/target/surefire-reports'
+    ArtifactName: 'TestResults'
+    publishLocation: 'Container'
+  condition: always() # This ensures it saves even if tests fail!
