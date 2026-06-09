@@ -1,0 +1,23 @@
+trigger:
+  branches:
+    include: [ "main" ]
+pr:
+  branches:
+    include: [ "main" ]
+
+pool:
+  vmImage: 'windows-latest' # Allocates Windows Server host for browser executions
+
+steps:
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '17'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
+
+- task: Maven@4
+  inputs:
+    mavenPOMFile: 'pom.xml'
+    goals: 'clean test'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
