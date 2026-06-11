@@ -1,0 +1,45 @@
+trigger:
+  branches:
+    include: [ "main" ]
+pr:
+  branches:
+    include: [ "main" ]
+
+pool:
+  vmImage: 'windows-latest' # Allocates Windows Server host for browser executions
+
+steps:
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '17'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
+
+- task: Maven@4
+  inputs:
+    mavenPOMFile: 'pom.xml'
+    goals: 'clean test'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/target/surefire-reports'
+    ArtifactName: 'TestResults'
+    publishLocation: 'Container'
+  condition: always() # This ensures it saves even if tests fail!
+
+- script: dir $(System.DefaultWorkingDirectory) /s
+  displayName: 'List all files to find the report path'
+
+- task: PublishHtmlReport@1
+  inputs:
+    # This points to the folder where your index.html/emailable-report.html lives
+    htmlDir: '$(System.DefaultWorkingDirectory)/target/surefire-reports'
+    
+    # This is the name of the tab that will appear in your Azure build screen
+    summaryFile: 'emailable-report.html' 
+    
+    # This tells it to display the report in a new tab in the UI
+    tabName: 'Test Report'
+  condition: always()
