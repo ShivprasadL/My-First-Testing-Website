@@ -94,8 +94,6 @@ public class SectionOneTest extends BaseTest {
     	
     	Assert.assertEquals(resetMessage,"Form has been reset.");
     }
-    
- 
 }
 
 

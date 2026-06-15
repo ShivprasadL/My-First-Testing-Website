@@ -16,9 +16,8 @@
     
     <test name="Facebook Tests">
         <classes>
-            <class name="com.website.testing.LoginTest"/>
-            <!-- Add more test classes here as you create them -->
-            <!-- <class name="com.website.testing.RegistrationTest"/> -->
+            <class name="com.website.testing.Website_HomepageTest"/>
+            <class name="com.website.testing.SectionOneTest"/>
         </classes>
     </test>
     
